@@ -50,7 +50,7 @@ URL :  http://localhost:8080/api/books
 Method : POST 
 success: 201 as status code (Created) 
 Bad Request: 400 if the Book,Patron and IBSN is already exist 
-Validation error: 400 as status code (Bad Request) 
+& Validation error: 400 as status code (Bad Request) 
 content-type: application/json
 Request Body (JSON):
 {
@@ -66,7 +66,7 @@ Method : Put
 success: 200 as status code (OK) 
 Not Found: if the specified id is not available
 Bad Request: 400 if the Book,Author and IBSN is already exist
-Validation error: 400 as status code (Bad Request) 
+& Validation error: 400 as status code (Bad Request) 
 content-type: application/json
 Request Body (JSON):
 {
@@ -100,7 +100,7 @@ URL :  http://localhost:8080/api/patrons
 Method : POST 
 success: 201 as status code (Created) 
 Bad Request: 400 if the name,contact is already exist 
-Validation error: 400 as status code (Bad Request) 
+& Validation error: 400 as status code (Bad Request) 
 content-type: application/json
 Request Body (JSON):
 {
@@ -114,7 +114,7 @@ Method : Put
 success: 200 as status code (OK) 
 Not Found(404): if the specified id is not available
 Bad Request: 400 if the name,contact is already exist 
-Validation error: 400 as status code (Bad Request) 
+& Validation error: 400 as status code (Bad Request) 
 content-type: application/json
 Request Body (JSON):
 {
