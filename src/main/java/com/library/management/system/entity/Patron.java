@@ -18,7 +18,9 @@ public class Patron {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "patron_id")
     private int id;
+    @Column(unique = true)
     private String name;
+    @Column(unique = true)
     private String contactInformation;
 
     @OneToMany(mappedBy = "patron", cascade = CascadeType.ALL)

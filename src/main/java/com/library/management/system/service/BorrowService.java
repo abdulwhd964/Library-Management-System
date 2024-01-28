@@ -19,22 +19,12 @@ public class BorrowService {
     private BorrowRepository borrowingRecordRepository;
     private ModelMapper mapper;
     private BookService bookService;
-
     private PatronService patronService;
 
     @Transactional
     public BorrowDTO save(final BorrowDTO borrowDTO) {
         Borrow newBorrow = borrowingRecordRepository.save(getBorrowRecord(borrowDTO));
         return mapper.map(newBorrow, BorrowDTO.class);
-    }
-
-    private Borrow getBorrowRecord(BorrowDTO borrowDTO) {
-        Borrow borrow = mapper.map(borrowDTO, Borrow.class);
-        Book book = bookService.findBookById(borrowDTO.getBookId());
-        Patron patron = patronService.findById(borrowDTO.getPatronId());
-        borrow.setBook(book);
-        borrow.setPatron(patron);
-        return borrow;
     }
 
     @Transactional
@@ -46,11 +36,19 @@ public class BorrowService {
         return mapper.map(borrowingRecordRepository.save(currentBorrowRecord), BorrowDTO.class);
     }
 
-    public BorrowDTO findById(final int borrowRecordId) {
-        return mapper.map(findBorrowById(borrowRecordId), BorrowDTO.class);
+    public Borrow findBorrowById(final int borrowRecordId) {
+        return borrowingRecordRepository.findById(borrowRecordId)
+                .orElseThrow(() ->
+                        new BorrowRecordNotFoundException(String.format("Borrow Record for the id: %s. not found",
+                                borrowRecordId)));
     }
 
-    public Borrow findBorrowById(final int borrowRecordId) {
-        return borrowingRecordRepository.findById(borrowRecordId).orElseThrow(() -> new BorrowRecordNotFoundException(String.format("Borrow Record for the id: %s. not found", borrowRecordId)));
+    private Borrow getBorrowRecord(BorrowDTO borrowDTO) {
+        Borrow borrow = mapper.map(borrowDTO, Borrow.class);
+        Book book = bookService.findBookById(borrowDTO.getBookId());
+        Patron patron = patronService.findById(borrowDTO.getPatronId());
+        borrow.setBook(book);
+        borrow.setPatron(patron);
+        return borrow;
     }
 }

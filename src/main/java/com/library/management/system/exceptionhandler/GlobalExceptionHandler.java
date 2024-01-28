@@ -6,6 +6,7 @@ import com.library.management.system.exception.ErrorResponse;
 import com.library.management.system.exception.PatronNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ErrorResponse> handleUnAuthorized(final Exception exception) {
-        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new ErrorResponse("Please try again later"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({AuthenticationException.class})
@@ -49,10 +50,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = DataIntegrityViolationException.class)
     ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(final DataIntegrityViolationException exception) {
-        if (exception.getMessage().toLowerCase().contains("foreign") && exception.getMessage().toLowerCase().contains("book")) {
+        if (StringUtils.containsAnyIgnoreCase(exception.getMessage(),"foreign") && StringUtils.containsAnyIgnoreCase(exception.getMessage(),"book")) {
             return new ResponseEntity<>(new ErrorResponse("Book is associated with borrow record"), HttpStatus.FORBIDDEN);
-        }else if(exception.getMessage().toLowerCase().contains("foreign") && exception.getMessage().toLowerCase().contains("patron")){
+        }else if (StringUtils.containsAnyIgnoreCase(exception.getMessage(),"foreign") && StringUtils.containsAnyIgnoreCase(exception.getMessage(),"patron")) {
             return new ResponseEntity<>(new ErrorResponse("Patron is associated with borrow record"), HttpStatus.FORBIDDEN);
+        }else if(StringUtils.containsAnyIgnoreCase(exception.getMessage(),"patron")){
+            return new ResponseEntity<>(new ErrorResponse("Patron Already Exist!!"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new ErrorResponse("Book Already Exist!!"), HttpStatus.BAD_REQUEST);
     }

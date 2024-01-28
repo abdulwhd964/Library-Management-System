@@ -1,7 +1,6 @@
 package com.library.management.system.controller;
 
 import com.library.management.system.dto.BookDTO;
-import com.library.management.system.entity.Book;
 import com.library.management.system.exception.BookNotFoundException;
 import com.library.management.system.service.BookService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,7 +47,7 @@ public class BookController {
      * @return
      */
     @PostMapping("/books")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "inserting an book")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "book save")})
     public ResponseEntity<BookDTO> saveBook(@Valid @RequestBody BookDTO bookDTO) {
         return new ResponseEntity<>(bookService.save(bookDTO), HttpStatus.CREATED);
     }
@@ -60,7 +59,7 @@ public class BookController {
      * @return
      */
     @PutMapping("/books/{id}")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "updating an book")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "book update")})
     public ResponseEntity<BookDTO> updateBook(@PathVariable("id") int bookId, @Valid @RequestBody BookDTO bookDTO) {
         bookDTO.setId(bookId);
         return new ResponseEntity<>(bookService.update(bookDTO), HttpStatus.OK);
@@ -72,7 +71,7 @@ public class BookController {
      * @return
      */
     @DeleteMapping("/books/{id}")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "deleting an book")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "book delete")})
     public ResponseEntity deleteBook(@PathVariable("id") int bookId) {
         bookService.deleteById(bookId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

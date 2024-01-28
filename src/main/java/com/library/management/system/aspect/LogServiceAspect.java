@@ -32,7 +32,6 @@ public class LogServiceAspect {
 
     @Around("validationPointcut()")
     public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.info("*** AroundAdvice LogServiceAspect *** ");
         return joinPoint.proceed();
     }
 
@@ -42,5 +41,6 @@ public class LogServiceAspect {
         System.out.println("Exception is:" + ex.getMessage());
         return joinPoint.getTarget();
     }
+
 
 }
