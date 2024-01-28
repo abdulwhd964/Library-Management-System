@@ -82,8 +82,7 @@ Method : Delete
 success: 204 as status code (No Content) 
 Not Found (404): if the specified id is not available
 ===============
-Patron Api Details
-
+Patron Api Details:
 Description: Getting All Patrons Record
 URL : http://localhost:8080/api/patrons
 Method : GET
@@ -129,8 +128,7 @@ Method : Delete
 success: 204 as status code (No Content) 
 Not Found (404): if the specified id is not available
 ====================
-Borrow Record API Details
-
+Borrow Record API Details:
 Description: Allow a patron to borrow a book.
 METHOD: POST
 URL: /api/borrow/{bookId}/patron/{patronId}
