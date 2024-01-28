@@ -31,5 +31,5 @@ public class Book {
     private String isbn;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private Set<Borrowing> borrowings = new HashSet<>();
+    private Set<Borrow> borrows = new HashSet<>();
 }

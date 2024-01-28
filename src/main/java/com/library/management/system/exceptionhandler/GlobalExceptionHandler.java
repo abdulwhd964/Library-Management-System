@@ -14,7 +14,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.StringJoiner;
 
@@ -27,28 +26,35 @@ public class GlobalExceptionHandler {
     ResponseEntity<ErrorResponse> handleBookNotFoundException(final BookNotFoundException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(value = PatronNotFoundException.class)
     ResponseEntity<ErrorResponse> handlePatronNotFoundException(final PatronNotFoundException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ErrorResponse> handleUnAuthorized(final Exception exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({ AuthenticationException.class })
+    @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<ErrorResponse> handleAuthenticationException(Exception exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.UNAUTHORIZED);
     }
+
     @ExceptionHandler(value = BorrowRecordNotFoundException.class)
     ResponseEntity<ErrorResponse> handleBorrowRecordNotFoundException(final BorrowRecordNotFoundException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler(value = DataIntegrityViolationException.class)
     ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(final DataIntegrityViolationException exception) {
-        return new ResponseEntity<>(new ErrorResponse("Book Already Exist!!" ), HttpStatus.BAD_REQUEST);
+        if (exception.getMessage().toLowerCase().contains("foreign") && exception.getMessage().toLowerCase().contains("book")) {
+            return new ResponseEntity<>(new ErrorResponse("Book is associated with borrow record"), HttpStatus.FORBIDDEN);
+        }else if(exception.getMessage().toLowerCase().contains("foreign") && exception.getMessage().toLowerCase().contains("patron")){
+            return new ResponseEntity<>(new ErrorResponse("Patron is associated with borrow record"), HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(new ErrorResponse("Book Already Exist!!"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)

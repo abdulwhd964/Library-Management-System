@@ -20,24 +20,44 @@ public class PatronController {
 
     PatronService patronService;
 
+    /**
+     * return an list of patron
+     * @return
+     */
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Getting all patrons")})
     @GetMapping("/patrons")
     public ResponseEntity<List<PatronDTO>> getAllPatrons() {
         return new ResponseEntity<>(patronService.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * return an single patron
+     * @param patronId
+     * @return
+     */
     @GetMapping("/patrons/{id}")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Getting single patron")})
     public ResponseEntity<PatronDTO> getPatron(@PathVariable("id") int patronId) {
         return new ResponseEntity<>(patronService.findPatronById(patronId), HttpStatus.OK);
     }
 
+    /**
+     * insert an patron
+     * @param patronDTO
+     * @return
+     */
     @PostMapping("/patrons")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "inserting an single patron")})
     public ResponseEntity<PatronDTO> savePatron(@Valid @RequestBody PatronDTO patronDTO) {
         return new ResponseEntity<>(patronService.save(patronDTO), HttpStatus.CREATED);
     }
 
+    /**
+     * update an patron
+     * @param patronId
+     * @param patronDTO
+     * @return
+     */
     @PutMapping("/patrons/{id}")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "updating an single patron")})
     public ResponseEntity<PatronDTO> updatePatron(@PathVariable("id") int patronId, @Valid @RequestBody PatronDTO patronDTO) {
@@ -45,6 +65,11 @@ public class PatronController {
         return new ResponseEntity<>(patronService.update(patronDTO), HttpStatus.OK);
     }
 
+    /**
+     * delete an patron
+     * @param patronId
+     * @return
+     */
     @DeleteMapping("/patrons/{id}")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "deleting single patron")})
     public ResponseEntity deletePatron(@PathVariable("id") int patronId) {

@@ -22,5 +22,5 @@ public class Patron {
     private String contactInformation;
 
     @OneToMany(mappedBy = "patron", cascade = CascadeType.ALL)
-    private Set<Borrowing> borrowings = new HashSet<>();
+    private Set<Borrow> borrows = new HashSet<>();
 }
