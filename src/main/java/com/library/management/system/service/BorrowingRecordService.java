@@ -2,9 +2,8 @@ package com.library.management.system.service;
 
 import com.library.management.system.dto.BorrowRecordDTO;
 import com.library.management.system.entity.Book;
-import com.library.management.system.entity.BorrowingRecord;
+import com.library.management.system.entity.Borrowing;
 import com.library.management.system.entity.Patron;
-import com.library.management.system.exception.BookNotFoundException;
 import com.library.management.system.exception.BorrowRecordNotFoundException;
 import com.library.management.system.repository.BorrowingRecordRepository;
 import lombok.AllArgsConstructor;
@@ -25,23 +24,23 @@ public class BorrowingRecordService {
 
     @Transactional
     public BorrowRecordDTO save(final BorrowRecordDTO borrowRecordDTO) {
-        BorrowingRecord newBorrowingRecord = borrowingRecordRepository.save(getBorrowRecord(borrowRecordDTO));
-        return mapper.map(newBorrowingRecord, BorrowRecordDTO.class);
+        Borrowing newBorrowing = borrowingRecordRepository.save(getBorrowRecord(borrowRecordDTO));
+        return mapper.map(newBorrowing, BorrowRecordDTO.class);
     }
 
-    private BorrowingRecord getBorrowRecord(BorrowRecordDTO borrowRecordDTO) {
-        BorrowingRecord borrowingRecord = mapper.map(borrowRecordDTO, BorrowingRecord.class);
+    private Borrowing getBorrowRecord(BorrowRecordDTO borrowRecordDTO) {
+        Borrowing borrowing = mapper.map(borrowRecordDTO, Borrowing.class);
         Book book = bookService.findBookById(borrowRecordDTO.getBookId());
         Patron patron = patronService.findById(borrowRecordDTO.getPatronId());
-        borrowingRecord.setBook(book);
-        borrowingRecord.setPatron(patron);
-        return borrowingRecord;
+        borrowing.setBook(book);
+        borrowing.setPatron(patron);
+        return borrowing;
     }
 
     @Transactional
     public BorrowRecordDTO update(final BorrowRecordDTO borrowRecordDTO) {
-        BorrowingRecord currentBorrowRecord = findBorrowById(borrowRecordDTO.getBorrowingId());
-        BorrowingRecord toUpdateBorrowRecord = mapper.map(borrowRecordDTO, BorrowingRecord.class);
+        Borrowing currentBorrowRecord = findBorrowById(borrowRecordDTO.getBorrowingId());
+        Borrowing toUpdateBorrowRecord = mapper.map(borrowRecordDTO, Borrowing.class);
         currentBorrowRecord.setBorrowingId(toUpdateBorrowRecord.getBorrowingId());
         currentBorrowRecord.setReturnDate(toUpdateBorrowRecord.getReturnDate());
         return mapper.map(borrowingRecordRepository.save(currentBorrowRecord), BorrowRecordDTO.class);
@@ -51,7 +50,7 @@ public class BorrowingRecordService {
         return mapper.map(findBorrowById(borrowRecordId), BorrowRecordDTO.class);
     }
 
-    public BorrowingRecord findBorrowById(final int borrowRecordId) {
+    public Borrowing findBorrowById(final int borrowRecordId) {
         return borrowingRecordRepository.findById(borrowRecordId).orElseThrow(() -> new BorrowRecordNotFoundException(String.format("Borrow Record for the id: %s. not found", borrowRecordId)));
     }
 }

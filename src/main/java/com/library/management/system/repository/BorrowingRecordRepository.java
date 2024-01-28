@@ -1,7 +1,7 @@
 package com.library.management.system.repository;
 
-import com.library.management.system.entity.BorrowingRecord;
+import com.library.management.system.entity.Borrowing;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BorrowingRecordRepository extends JpaRepository<BorrowingRecord,Integer> {
+public interface BorrowingRecordRepository extends JpaRepository<Borrowing,Integer> {
 }

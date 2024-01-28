@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class BorrowingRecord {
+public class Borrowing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,10 +9,12 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.StringJoiner;
 
@@ -28,6 +30,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = PatronNotFoundException.class)
     ResponseEntity<ErrorResponse> handlePatronNotFoundException(final PatronNotFoundException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ErrorResponse> handleUnAuthorized(final Exception exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({ AuthenticationException.class })
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(Exception exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.UNAUTHORIZED);
     }
     @ExceptionHandler(value = BorrowRecordNotFoundException.class)
     ResponseEntity<ErrorResponse> handleBorrowRecordNotFoundException(final BorrowRecordNotFoundException exception) {
