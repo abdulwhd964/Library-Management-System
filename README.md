@@ -130,6 +130,7 @@ success: 204 as status code (No Content)
 Not Found (404): if the specified id is not available
 ====================
 Borrow Record API Details
+
 Description: Allow a patron to borrow a book.
 METHOD: POST
 URL: /api/borrow/{bookId}/patron/{patronId}
@@ -143,7 +144,6 @@ success: 201 as status code (Created)
 Error:
 Not Found: if the specified Book id is not available
 Not Found: if the specified Patron id is not available
-
 ==============
 Description: Record the return of a borrowed book by a patron.
 METHOD: PUT
@@ -160,5 +160,4 @@ Error:
 Not Found (404): if the specified Book id is not available
 Not Found (404): if the specified Patron id is not available
 Not Found (404): if the specified Borrowing id is not available
-
 ==================
