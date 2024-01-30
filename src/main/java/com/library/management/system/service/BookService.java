@@ -48,7 +48,7 @@ public class BookService {
         return mapper.map(savedBook, BookDTO.class);
     }
     @Transactional
-    @CacheEvict(value = "patron", key = "#bookDTO.id",allEntries=true)
+    @CacheEvict(value = "book", key = "#bookDTO.id",allEntries=true)
     public BookDTO update(final BookDTO bookDTO) {
         var currentBook = this.findById(bookDTO.getId());
         Book toUpdateBook = mapper.map(bookDTO, Book.class);
