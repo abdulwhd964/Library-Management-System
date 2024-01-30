@@ -61,7 +61,7 @@ class PatronRestControllerTest {
                 .perform(post("/patrons").
                         contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(patronDTO))
                         .header(HttpHeaders.AUTHORIZATION,
-                                "Basic " + Base64Utils.encodeToString("admin:admin".getBytes())))
+                                "Basic " + Base64Utils.encodeToString("library:library".getBytes())))
                         .andExpect(status().isCreated()).andReturn();
     }
     @Test
@@ -70,7 +70,7 @@ class PatronRestControllerTest {
         MvcResult result=   this.mockMvc
                 .perform(get("/patrons/1")
                         .header(HttpHeaders.AUTHORIZATION,
-                                "Basic " + Base64Utils.encodeToString("admin:admin".getBytes())))
+                                "Basic " + Base64Utils.encodeToString("library:library".getBytes())))
                 .andExpect(status().isOk()).andReturn();
 
     }
